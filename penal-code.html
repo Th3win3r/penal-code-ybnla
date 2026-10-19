@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Laws and Fines</title>
+<style>
+  :root{
+    --navy:#1b365d; --gold:#c49a3a; --ink:#1f2937; --muted:#6b7280;
+    --bg:#f3f4f7; --card:#fff; --line:#dfe3ea; --felony:#9b1c1c; --misd:#a15c07; --infr:#4b5563;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0}
+  body{background:var(--bg);color:var(--ink);font-family:"Segoe UI",system-ui,Arial,sans-serif;font-size:15px;line-height:1.5}
+  .strip{background:#e8eaef;font-size:12.5px;color:#374151;padding:8px 0}
+  .wrap{max-width:1130px;margin:0 auto;padding:0 24px}
+  header.hero{background:var(--navy);border-bottom:4px solid var(--gold);color:#fff;padding:34px 0}
+  .hero .wrap{display:flex;align-items:center;gap:26px}
+  .seal{flex:none;width:76px;height:76px;border-radius:50%;border:3px solid var(--gold);display:grid;place-items:center}
+  .seal svg{width:38px;height:38px;fill:none;stroke:var(--gold);stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+  .state{color:var(--gold);font-size:13px;font-weight:700;letter-spacing:.14em}
+  h1{font-family:Georgia,"Times New Roman",serif;font-size:34px;margin:2px 0 4px;line-height:1.15}
+  .dept{font-size:14px;opacity:.9}
+  nav.tabs{background:#fff;border-bottom:1px solid var(--line)}
+  nav.tabs .wrap{display:flex;gap:30px;overflow-x:auto}
+  .tab{background:none;border:0;border-bottom:3px solid transparent;padding:16px 2px 14px;font:inherit;font-size:16px;color:#374151;cursor:pointer;white-space:nowrap}
+  .tab span{font-size:13px;color:var(--muted);margin-left:4px}
+  .tab[aria-selected=true]{color:var(--navy);font-weight:700;border-bottom-color:var(--gold)}
+  .tab:focus-visible,.row:focus-visible,#q:focus-visible{outline:2px solid var(--navy);outline-offset:2px}
+  main{padding:36px 0 60px}
+  h2{font-family:Georgia,"Times New Roman",serif;font-size:27px;margin:0 0 6px}
+  .lead{color:#4b5563;margin:0 0 26px;max-width:62ch}
+  label{display:block;font-size:13.5px;font-weight:600;color:#374151;margin-bottom:7px}
+  .search{position:relative;max-width:500px;margin-bottom:24px}
+  .search svg{position:absolute;left:12px;top:50%;transform:translateY(-50%);width:17px;height:17px;fill:none;stroke:#6b7280;stroke-width:2;stroke-linecap:round}
+  #q{width:100%;padding:11px 12px 11px 38px;font:inherit;border:1px solid #b8bfcc;border-radius:3px;background:#fff}
+  .table{background:var(--card);border:1px solid var(--line);overflow-x:auto}
+  .grid{display:grid;grid-template-columns:110px 1fr 140px 110px 140px 28px;align-items:center;gap:0 12px;padding:0 18px;min-width:720px}
+  .head{background:#eef0f5;border-bottom:2px solid var(--navy);font-size:12.5px;font-weight:700;letter-spacing:.08em;color:var(--navy);padding-top:14px;padding-bottom:14px}
+  .head .r{text-align:right}
+  .item{border-bottom:1px solid var(--line)}
+  .row{width:100%;background:none;border:0;font:inherit;text-align:left;cursor:pointer;padding-top:14px;padding-bottom:14px;color:inherit}
+  .row:hover{background:#f7f8fb}
+  .code{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:13.5px;color:#6b7280}
+  .charge{font-size:16px}
+  .cls{font-weight:700;font-size:14px}
+  .cls.felony{color:var(--felony)} .cls.misd{color:var(--misd)} .cls.infr{color:var(--infr)}
+  .fine,.sent{text-align:right}
+  .chev{width:14px;height:14px;fill:none;stroke:#6b7280;stroke-width:2;transition:transform .15s}
+  .row[aria-expanded=true] .chev{transform:rotate(180deg)}
+  .detail{padding:4px 18px 20px 140px;background:#fafbfd;font-size:14.5px;color:#374151}
+  .detail dl{display:grid;grid-template-columns:130px 1fr;gap:6px 12px;margin:12px 0 0;max-width:560px}
+  .detail dt{color:var(--muted)} .detail dd{margin:0}
+  .empty{padding:36px 18px;text-align:center;color:var(--muted)}
+  footer{font-size:13px;color:var(--muted);margin-top:18px}
+  @media (prefers-reduced-motion:reduce){.chev{transition:none}}
+  @media (max-width:640px){.hero .wrap{gap:16px}h1{font-size:26px}.seal{width:58px;height:58px}.detail{padding-left:18px}}
+</style>
+</head>
+<body>
+<div class="strip"><div class="wrap">An official website of the State of San Andreas</div></div>
+
+<header class="hero"><div class="wrap">
+  <div class="seal" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 3v17M7 20h10M5 7h14"/><path d="M5 7l-3 7a3 3 0 0 0 6 0L5 7zM19 7l-3 7a3 3 0 0 0 6 0l-3-7z"/></svg></div>
+  <div><div class="state">STATE OF SAN ANDREAS</div><h1>Laws and Fines</h1><div class="dept">Department of Justice</div></div>
+</div></header>
+
+<nav class="tabs" aria-label="Filter offences"><div class="wrap" role="tablist" id="tabs"></div></nav>
+
+<main><div class="wrap">
+  <h2>Penal Code</h2>
+  <p class="lead">Every offence a person can be charged with in this state, with the fine and the sentence each one carries. Select an offence to read more.</p>
+
+  <label for="q">Search the code</label>
+  <div class="search">
+    <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4"/></svg>
+    <input id="q" type="search" placeholder="Name, code or keyword" autocomplete="off">
+  </div>
+
+  <div class="table" role="table" aria-label="Penal code">
+    <div class="grid head" role="row">
+      <div>CODE</div><div>CHARGE</div><div>CLASS</div><div class="r">FINE</div><div class="r">SENTENCE</div><div></div>
+    </div>
+    <div id="list"></div>
+  </div>
+  <footer id="count"></footer>
+</div></main>
+
+<script>
+// [code, title, class, fine, jail months (0 = none, -1 = life), parole, notes, category]
+const DATA = [
+  ['TC 01-01','Speeding (1–15 mph over limit)','Infraction',250,0,false,'Officer discretion on fine amount.','Traffic'],
+  ['TC 01-02','Speeding (16–25 mph over limit)','Infraction',500,0,false,'','Traffic'],
+  ['TC 01-03','Reckless Driving','Misdemeanor B',1000,6,true,'','Traffic'],
+  ['TC 01-04','Evading a Peace Officer (Vehicle)','Felony C',5000,30,true,'','Traffic'],
+  ['TC 01-05','Driving Under the Influence (DUI)','Misdemeanor A',2500,12,true,'Mandatory license suspension.','Traffic'],
+  ['PC 10-01','Simple Assault','Misdemeanor B',500,6,true,'','Assault'],
+  ['PC 10-02','Assault with a Deadly Weapon','Felony B',10000,60,true,'','Assault'],
+  ['PC 10-03','First Degree Murder','Felony A',50000,-1,false,'','Assault'],
+  ['PC 10-04','Second Degree Murder','Felony A',25000,120,false,'','Assault'],
+  ['PC 10-05','Manslaughter','Felony B',10000,48,true,'','Assault'],
+  ['WC 20-01','Carrying a Concealed Firearm (Unlicensed)','Misdemeanor A',2000,12,true,'','Weapons'],
+  ['WC 20-02','Possession of an Illegal Firearm','Felony C',5000,36,true,'','Weapons'],
+  ['WC 20-03','Illegal Discharge of a Firearm','Felony C',5000,24,true,'','Weapons'],
+  ['DC 30-01','Possession of Controlled Substance','Misdemeanor A',1500,12,true,'','Drugs'],
+  ['DC 30-02','Possession with Intent to Distribute','Felony B',15000,60,true,'Quantity ≥ threshold for distribution charge.','Drugs'],
+  ['RC 40-01','Petty Theft','Infraction',750,0,false,'Value under $500.','Robbery'],
+  ['RC 40-02','Grand Theft Auto','Felony C',8000,36,true,'','Robbery'],
+  ['RC 40-03','Armed Robbery','Felony A',20000,90,false,'','Robbery']
+].map(([code,title,cls,fine,jail,parole,notes,cat])=>({
+  code,title,cls,fine,jail,parole,notes,cat,
+  group: cls.startsWith('Felony')?'felony':cls.startsWith('Misdemeanor')?'misd':'infr'
+}));
+
+const TABS = [
+  {id:'all',label:'All offences',test:()=>true},
+  {id:'felony',label:'Felonies',test:o=>o.group==='felony'},
+  {id:'misd',label:'Misdemeanors',test:o=>o.group==='misd'},
+  {id:'infr',label:'Infractions',test:o=>o.group==='infr'}
+];
+const money = n => '$' + n.toLocaleString('en-US');
+const sentence = o => o.jail===-1 ? 'Life' : o.jail===0 ? 'Fine only' : o.jail + ' months';
+const esc = s => String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const CHEV = '<svg class="chev" viewBox="0 0 16 16" aria-hidden="true"><path d="M3 6l5 5 5-5"/></svg>';
+
+let tab='all', query='', open=null;
+
+function renderTabs(){
+  document.getElementById('tabs').innerHTML = TABS.map(t=>
+    `<button class="tab" role="tab" aria-selected="${t.id===tab}" data-id="${t.id}">${t.label}<span>${DATA.filter(t.test).length}</span></button>`
+  ).join('');
+}
+
+function renderList(){
+  const t = TABS.find(x=>x.id===tab);
+  const q = query.trim().toLowerCase();
+  const rows = DATA.filter(t.test).filter(o=>!q || [o.code,o.title,o.cls,o.cat,o.notes].join(' ').toLowerCase().includes(q));
+  const list = document.getElementById('list');
+  if(!rows.length){ list.innerHTML = '<div class="empty">No offence matches your search. Try a different name or code.</div>'; }
+  else list.innerHTML = rows.map(o=>{
+    const isOpen = open===o.code;
+    return `<div class="item">
+      <button class="row grid" aria-expanded="${isOpen}" data-code="${o.code}">
+        <span class="code">${esc(o.code)}</span>
+        <span class="charge">${esc(o.title)}</span>
+        <span class="cls ${o.group}">${esc(o.cls)}</span>
+        <span class="fine">${money(o.fine)}</span>
+        <span class="sent">${sentence(o)}</span>
+        ${CHEV}
+      </button>
+      ${isOpen ? `<div class="detail"><dl>
+        <dt>Category</dt><dd>${esc(o.cat)}</dd>
+        <dt>Class</dt><dd>${esc(o.cls)}</dd>
+        <dt>Parole</dt><dd>${o.parole?'Eligible':'Not eligible'}</dd>
+        ${o.notes?`<dt>Notes</dt><dd>${esc(o.notes)}</dd>`:''}
+      </dl></div>`:''}
+    </div>`;
+  }).join('');
+  document.getElementById('count').textContent = rows.length + (rows.length===1?' offence shown':' offences shown');
+}
+
+document.getElementById('tabs').addEventListener('click',e=>{
+  const b = e.target.closest('.tab'); if(!b) return;
+  tab = b.dataset.id; open = null; renderTabs(); renderList();
+});
+document.getElementById('list').addEventListener('click',e=>{
+  const b = e.target.closest('.row'); if(!b) return;
+  open = open===b.dataset.code ? null : b.dataset.code; renderList();
+  const again = document.querySelector(`.row[data-code="${b.dataset.code}"]`); if(again) again.focus();
+});
+document.getElementById('q').addEventListener('input',e=>{ query=e.target.value; open=null; renderList(); });
+
+renderTabs(); renderList();
+</script>
+</body>
+</html>
